@@ -27,6 +27,12 @@ Widget::Widget(QWidget *parent)
         m_input_display.push_back(state);
     }
 
+    // Counter
+    m_cntLabel = new QLabel(this);
+    m_cntLabel->setAlignment(Qt::AlignCenter);
+    grid->addWidget(m_cntLabel, 3, 1);
+    updateCount();
+
     // initialize hardware
     m_gpio = new gpio();
 
@@ -48,4 +54,9 @@ void Widget::updateButtonState()
         int state = !m_gpio->get(pin);
         m_input_display[n++]->setText(QString::number(state));
     }
+}
+
+void Widget::updateCount()
+{
+    m_cntLabel->setText(QString("Counter: ") + QString::number(m_cnt));
 }

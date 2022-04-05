@@ -6,8 +6,8 @@
 #include <QList>
 
 // Raspberry Hat BULME
-const QList<int> LEDS = {18, 23, 24, 25}; // Output pins
-const QList<int> BUTTONS = {22, 27, 17}; // Input pins
+const QList<int> LEDS = { 18, 23, 24, 25 }; // Output pins
+const QList<int> BUTTONS = { 22, 27, 17 }; // Input pins
 
 // Chip configuration Raspberry specific
 const int LFLAGS = 0;
