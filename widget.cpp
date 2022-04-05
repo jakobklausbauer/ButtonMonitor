@@ -27,18 +27,19 @@ Widget::Widget(QWidget *parent)
         m_input_display.push_back(state);
     }
 
+    // initialize hardware
+    m_gpio = new gpio();
+
     // Counter
     m_cntLabel = new QLabel(this);
     m_cntLabel->setAlignment(Qt::AlignCenter);
     grid->addWidget(m_cntLabel, 3, 1);
     updateCount();
 
-    // initialize hardware
-    m_gpio = new gpio();
-
     m_timer = new QTimer(this);
     // Connect QTimer (Signal) with GUI function (Slot) "update display"
     connect(m_timer, &QTimer::timeout, this, &Widget::updateButtonState);
+    connect(m_timer, &QTimer::timeout, this, &Widget::updateCount);
     m_timer->start(T_UPDATE);
 }
 
@@ -58,5 +59,14 @@ void Widget::updateButtonState()
 
 void Widget::updateCount()
 {
+    if(m_gpio->get(BUTTONS[0], gpio::getMode::falling)) // getMode: raw | rising | falling
+        m_cnt--;
+
+    else if(m_gpio->get(BUTTONS[2], gpio::getMode::falling))
+        m_cnt++;
+
+    else if(m_gpio->get(BUTTONS[1], gpio::getMode::falling))
+        m_cnt = 0;
+
     m_cntLabel->setText(QString("Counter: ") + QString::number(m_cnt));
 }
